@@ -2,7 +2,7 @@ Copyright Notice:
 All supplementary work owners retain their original copyright. Their base to form the accessibility modifications are simply for educational purposes and fall under fair use
 
 All accessibility modifications are the work of the project team:
-Mark, Newsome, Hunter, Justin
+Mark, Newsome, Hunter, Justin, Shaunak
 
 # Online Chess
 This is a chess website where people can play against each other online in real time. 

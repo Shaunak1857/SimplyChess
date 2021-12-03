@@ -1,12 +1,12 @@
 {
-  "name": "chess0",
+  "name": "SimplyChess",
   "version": "1.0.0",
-  "description": "An online chess website",
+  "description": "An accessible chess application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Aveek Saha",
+  "author": "Mark Watson, D Newman, Shaunak, Justin, Hunter Devlin",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
