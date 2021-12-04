@@ -1,8 +1,8 @@
 game = new Chess();
 var socket = io();
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
+const SpeechRecognition = window.webkitSpeechRecognition;
+const recognition = new webkitSpeechRecognition();
 recognition.lang = 'en-US';
 recognition.interimResults = false;
 
@@ -28,8 +28,15 @@ var connect = function () {
 }
 
 document.getElementById("inputSpeech").addEventListener("click", function (e) {
-    console.log("Listening for user...");
-    recognition.start();
+    if (game.game_over() === true || play) {
+        synthVoice("No game in progress");
+    } else if ((game.turn() === 'w' && color === 'black') ||
+        (game.turn() === 'b' && color === 'white')) {
+        synthVoice("Wait for your turn");
+    } else {
+        console.log("Listening for user...");
+        recognition.start();
+    }
 });
 
 recognition.addEventListener('result', (e) => {
@@ -38,10 +45,36 @@ recognition.addEventListener('result', (e) => {
     console.log("User said: " + text);
     console.log('Confidence: ' + e.results[0][0].confidence);
 
+    text = text.toLowerCase().replaceAll("for", "4").replaceAll(" ", "").replaceAll("-", "");
+    let text1 = text.substring(0, 2);
+    let text2 = text.substring(3);
+    text2 = text2.substring(text2.length - 2, text2.length);
+    console.log("from: " + text1 + "to: " + text2);
+
     /*
     add onDragStart and onDrop functionality here
     */
     synthVoice(text);
+    var move = game.move({
+        from: text1,
+        to: text2,
+        promotion: 'q' // NOTE: always promote to a queen for example simplicity
+    });
+    if (game.game_over()) {
+        state.innerHTML = 'GAME OVER';
+        socket.emit('gameOver', roomId)
+    }
+
+    // illegal move
+    if (move === null)
+        synthVoice("illegal move");
+    else {
+        socket.emit('move', { move: move, board: game.fen(), room: roomId });
+        board.position(game.fen());
+    }
+
+
+
 });
 
 function synthVoice(text) {
@@ -67,7 +100,7 @@ socket.on('play', function (msg) {
 
 socket.on('move', function (msg) {
     if (msg.room == roomId) {
-        console.log(msg.move);
+        console.log(msg);
         synthVoice(msg.move.piece + " to " + msg.move.to);
         game.move(msg.move);
         board.position(game.fen());
