@@ -1,6 +1,12 @@
 game = new Chess();
 var socket = io();
 
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+recognition.lang = 'en-US';
+recognition.interimResults = false;
+
+
 var color = "white";
 var players;
 var roomId;
@@ -11,7 +17,7 @@ var roomNumber = document.getElementById("roomNumbers")
 var button = document.getElementById("button")
 var state = document.getElementById('state')
 
-var connect = function(){
+var connect = function () {
     roomId = room.value;
     if (roomId !== "" && parseInt(roomId) <= 100) {
         room.remove();
@@ -21,9 +27,34 @@ var connect = function(){
     }
 }
 
+document.getElementById("inputSpeech").addEventListener("click", function (e) {
+    console.log("Listening for user...");
+    recognition.start();
+});
+
+recognition.addEventListener('result', (e) => {
+    let last = e.results.length - 1;
+    let text = e.results[last][0].transcript;
+    console.log("User said: " + text);
+    console.log('Confidence: ' + e.results[0][0].confidence);
+
+    /*
+    add onDragStart and onDrop functionality here
+    */
+    synthVoice(text);
+});
+
+function synthVoice(text) {
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.text = text;
+    synth.speak(utterance);
+}
+
+
 socket.on('full', function (msg) {
-    if(roomId == msg)
-        window.location.assign(window.location.href+ 'full.html');
+    if (roomId == msg)
+        window.location.assign(window.location.href + 'full.html');
 });
 
 socket.on('play', function (msg) {
@@ -36,6 +67,8 @@ socket.on('play', function (msg) {
 
 socket.on('move', function (msg) {
     if (msg.room == roomId) {
+        console.log(msg.move);
+        synthVoice(msg.move.piece + " to " + msg.move.to);
         game.move(msg.move);
         board.position(game.fen());
         console.log("moved")
@@ -64,8 +97,8 @@ var onDragStart = function (source, piece) {
         (game.turn() === 'w' && piece.search(/^b/) !== -1) ||
         (game.turn() === 'b' && piece.search(/^w/) !== -1) ||
         (game.turn() === 'w' && color === 'black') ||
-        (game.turn() === 'b' && color === 'white') ) {
-            return false;
+        (game.turn() === 'b' && color === 'white')) {
+        return false;
     }
     // console.log({play, players});
 };
@@ -126,7 +159,7 @@ socket.on('player', (msg) => {
     plno.innerHTML = 'Player ' + msg.players + " : " + color;
     players = msg.players;
 
-    if(players == 2){
+    if (players == 2) {
         play = false;
         socket.emit('play', msg.roomId);
         state.innerHTML = "Game in Progress"
