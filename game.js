@@ -40,6 +40,21 @@ document.getElementById("inputSpeech").addEventListener("click", function (e) {
     }
 });
 
+document.addEventListener('keydown', function (e) {
+    if (e.keyCode ==  90) {
+    
+    	if (game.game_over() === true || play) {
+        	synthVoice("No game in progress");
+    	} else if ((game.turn() === 'w' && color === 'black') ||
+        	(game.turn() === 'b' && color === 'white')) {
+        	synthVoice("Wait for your turn");
+    	} else {
+        	console.log("Listening for user...");
+        	recognition.start();
+    	}
+    }
+});
+
 recognition.addEventListener('result', (e) => {
     let last = e.results.length - 1;
     let text = e.results[last][0].transcript;
@@ -48,7 +63,7 @@ recognition.addEventListener('result', (e) => {
 
     text = text.toLowerCase().replaceAll("for", "4").replaceAll(" ", "").replaceAll("-", "");
     let text1 = text.substring(0, 2);
-    let text2 = text.substring(3);
+    let text2 = text.substring(2);
     text2 = text2.substring(text2.length - 2, text2.length);
     console.log("from: " + text1 + " to: " + text2);
 
