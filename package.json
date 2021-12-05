@@ -1,9 +1,10 @@
 {
-  "name": "SimplyChess",
+  "name": "001",
   "version": "1.0.0",
   "description": "An accessible chess application",
   "main": "index.js",
   "scripts": {
+    "start": "index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mark Watson, D Newman, Shaunak, Justin, Hunter Devlin",

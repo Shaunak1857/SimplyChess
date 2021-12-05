@@ -16,6 +16,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
   <script src="./chessboard/js/chessboard-0.3.0.min.js"></script>
+  <script src="https://kit.fontawesome.com/f29fe181cc.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="./chessboard/css/chessboard-0.3.0.min.css">
   <style>
     .number::-webkit-inner-spin-button,
@@ -48,8 +49,14 @@
     <a class="navbar-brand" href="#" onclick="location.reload()">Simply Chess</a>
 
     <ul class="nav">
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-item nav-link text-light" href="#" onclick="location.reload()">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-item nav-link text-light" href="#help" onclick="location.reload()">How to Play</a> 
+      </li>
+      <li class="nav-item">
+        <a class="nav-item nav-link text-light" href="https://github.com/Shaunak1857/SimplyChess/issues" target="_blank" rel="noopener noreferrer">Feedback</a> 
       </li>
     </ul>
   </nav>
@@ -71,9 +78,78 @@
       <div id="board" style="width: 500px; margin: auto"></div>
       <p class="mt-4 mb-1" id="player"></p>
       <p class="mt-1" id="state"></p>
-      <button id="inputSpeech" class="btn btn-success" onclick="inputSpeech()">Talk</button>
+      <button id="inputSpeech" class="btn btn-success" onclick="inputSpeech()"><i class="fas fa-microphone"></i> Talk</button>
+    </div>
+
+  </div>
+  <section>
+    <div class="jumbotron" id="help">
+    <h3 class="text-center mb-4 pb-2 text-primary fw-bold"><i class="fas fa-question-circle"></i> How to Play</h3>
+    <h4 class="text-center mb-5">
+      <i class="fas fa-universal-access"></i> Controls for universal accessibility are listed below <i class="fas fa-universal-access"></i>
+    </h4>
+  
+    <div class="row">
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary"><i class="fas fa-sign-in-alt"></i> Joining the Game Server</h6>
+        <p>
+          To start a game, enter a room number between 0 and 99 in the text box then press <strong>CONNECT</strong>. <br>
+          This will open a room for another player to join. <br>
+          Send the room number to the second player.
+          The game will not start until the second player has joined the same room. <br>
+          Once the second player has joined, the game state will change from <strong>"Waiting for Second Player,"</strong>
+          to <strong>"Game in Progress,"</strong> in which the first player is now able to move their <strong>WHITE</strong> chess pieces.
+        </p>
+      </div>
+      
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary"><i class="fas fa-mouse-pointer"></i> Making a Move With Your Mouse
+        </h6>
+        <p>
+          To make a move, start by hovering your mouse over any chess piece. <br>
+          By hovering, you can see the possible moves of pieces that are allowed to be moved, highlighted in gray on the board spaces.<br>
+          Once you have decided what piece to move and where, make that selection by dragging and dropping that piece to its new space. <br>
+          Control will change over to the other player after a move has been made.
+        </p>
+      </div>
+
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary"><i class="fas fa-microphone-alt"></i> Making a Move Using Your Voice</h6>
+        <p>
+          Moves made by voice input are done by addressing <strong>SPACES</strong> on the chessboard. <br>
+          When the talk button is activated, say the space that the piece is currently on, 
+          followed by the space you would like it to go to. <br>
+          For example, to move a pawn at the beginning of the game, press the talk button and say, <strong>""</strong>.<br>
+          The game will recognize your input and move the piece accordingly. If your move is invalid, you will hear <strong>""</strong>. <br>
+          To try again, press the talk button and say your move.
+        </p>
+      </div>
+  
+  
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary"><i class="fas fa-chess"></i> State of the Board
+        </h6>
+        <p>
+         To listen to the state of the board, simply press <strong>HISTORY</strong> to have it read out to you.
+        </p>
+      </div>
+  
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary"><i class="far fa-comments" href="https://github.com/Shaunak1857/SimplyChess/issues"></i> Issues?
+        </h6>
+        <p>If you have any issues playing the game,  or would like to provide feeback on how to make this game better,
+          simply press the <a href="https://github.com/Shaunak1857/SimplyChess/issues"target="_blank" rel="noopener noreferrer"><strong>HELP</strong></a> button at the top of the page.</p>
+      </div>
+  
+      <div class="col-md-6 col-lg-4 mb-4">
+        <h6 class="mb-3 text-primary"><i class="fas fa-redo-alt"></i> Play Another Game?</h6>
+        <p>
+          To start another game simply <a href="#"><strong>GO HOME</strong> </a>and input a new room number to set up another game.
+        </p>
+      </div>
     </div>
   </div>
+  </section>
   <script src="./game.js"></script>
 </body>
 
