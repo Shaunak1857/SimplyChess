@@ -25,6 +25,7 @@ var connect = function () {
         button.remove();
         socket.emit('joined', roomId);
         synthVoice("Joined room " + roomId);
+        document.getElementById("getHistory").classList.toggle("d-none");
     }
 }
 
