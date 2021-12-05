@@ -24,6 +24,7 @@ var connect = function () {
         roomNumber.innerHTML = "Room Number " + roomId;
         button.remove();
         socket.emit('joined', roomId);
+        synthVoice("Joined room " + roomId);
     }
 }
 
@@ -49,7 +50,7 @@ recognition.addEventListener('result', (e) => {
     let text1 = text.substring(0, 2);
     let text2 = text.substring(3);
     text2 = text2.substring(text2.length - 2, text2.length);
-    console.log("from: " + text1 + "to: " + text2);
+    console.log("from: " + text1 + " to: " + text2);
 
     /*
     add onDragStart and onDrop functionality here
@@ -93,7 +94,8 @@ socket.on('full', function (msg) {
 socket.on('play', function (msg) {
     if (msg == roomId) {
         play = false;
-        state.innerHTML = "Game in progress"
+        state.innerHTML = "Game in progress."
+        synthVoice("All players connected. Game now in progress. Player white may start.");
     }
     // console.log(msg)
 });
@@ -147,7 +149,8 @@ var onDrop = function (source, target) {
     });
     if (game.game_over()) {
         state.innerHTML = 'GAME OVER';
-        socket.emit('gameOver', roomId)
+        socket.emit('gameOver', roomId);
+        synthVoice("Game over.");
     }
 
     // illegal move
@@ -190,16 +193,19 @@ socket.on('player', (msg) => {
     color = msg.color;
 
     plno.innerHTML = 'Player ' + msg.players + " : " + color;
+    synthVoice("You are player " + msg.players + ", " + color + " side.");
     players = msg.players;
 
     if (players == 2) {
         play = false;
         socket.emit('play', msg.roomId);
-        state.innerHTML = "Game in Progress"
+        state.innerHTML = "Game in progress."
+        synthVoice("All players connected. Game now in progress. Player white may start.");
     }
-    else
-        state.innerHTML = "Waiting for Second player";
-
+    else {
+        state.innerHTML = "Waiting for second player...";
+        synthVoice("Waiting for second player...");
+    }
 
     var cfg = {
         orientation: color,
