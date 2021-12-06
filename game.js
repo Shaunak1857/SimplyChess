@@ -41,18 +41,43 @@ document.getElementById("inputSpeech").addEventListener("click", function (e) {
     }
 });
 
+document.getElementById("getHistory").addEventListener("click", function (e) {
+    let history = game.history();
+    let temp = "";
+    if (history.length == 0)
+        synthVoice("No moves have been played.");
+    else {
+        console.log("Full history: " + history);
+        for (let i = 0; i < history.length; i++) {
+            temp = history[i];
+            temp = temp.replaceAll("x", " takes ");
+            temp = temp.replaceAll("B", "bishop ");
+            temp = temp.replaceAll("N", "knight ");
+            temp = temp.replaceAll("R", "rook ");
+            temp = temp.replaceAll("Q", "queen ");
+            temp = temp.replaceAll("K", "king ");
+            temp = temp.replaceAll("O-O-O", "Castles Queenside ");
+            temp = temp.replaceAll("O-O", "Castles Kingside ");
+            temp = temp.replaceAll("+", " check");
+            temp = temp.replaceAll("#", " checkmate");
+            console.log("Move " + (i + 1) + " is " + temp);
+            synthVoice(temp);
+        }
+    }
+});
+
 document.addEventListener('keydown', function (e) {
-    if (e.keyCode ==  90) {
-    
-    	if (game.game_over() === true || play) {
-        	synthVoice("No game in progress");
-    	} else if ((game.turn() === 'w' && color === 'black') ||
-        	(game.turn() === 'b' && color === 'white')) {
-        	synthVoice("Wait for your turn");
-    	} else {
-        	console.log("Listening for user...");
-        	recognition.start();
-    	}
+    if (e.keyCode == 90) {
+
+        if (game.game_over() === true || play) {
+            synthVoice("No game in progress");
+        } else if ((game.turn() === 'w' && color === 'black') ||
+            (game.turn() === 'b' && color === 'white')) {
+            synthVoice("Wait for your turn");
+        } else {
+            console.log("Listening for user...");
+            recognition.start();
+        }
     }
 });
 
